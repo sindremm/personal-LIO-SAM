@@ -37,11 +37,12 @@ ADD launch ./launch
 ADD msg ./msg
 ADD src ./src
 ADD srv ./srv
-ADD CMakeLists.txt package.xml sim.sh ./
+ADD CMakeLists.txt package.xml ./
 
 # Building
 WORKDIR ${HOME_DIR}
 RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
+ADD sim.sh .
 
 
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc \
