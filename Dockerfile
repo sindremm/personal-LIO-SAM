@@ -23,12 +23,25 @@ RUN apt-get update \
 
 SHELL ["/bin/bash", "-c"]
 
-RUN mkdir -p ~/ros2_ws/src \
-    && cd ~/ros2_ws/src \
-    && git clone --branch ros2 https://github.com/sindremm/personal-LIO-SAM.git \
-    && cd .. \
-    && source /opt/ros/humble/setup.bash \
-    && colcon build
+ARG HOME_DIR=/root/ros2_ws
+ARG SRC_DIR=${HOME_DIR}/src/LIO-SAM
+
+WORKDIR ${SRC_DIR}
+ADD config ./config
+ADD include ./include
+ADD launch ./launch
+ADD msg ./msg
+ADD src ./src
+ADD srv ./srv
+ADD srv CMakeLists.txt package.xml ./
+WORKDIR ${HOME_DIR}
+RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
+# RUN mkdir -p ~/ros2_ws/src \
+#     && cd ~/ros2_ws/src \
+#     && git clone --branch ros2 https://github.com/sindremm/personal-LIO-SAM.git \
+#     && cd .. \
+#     && source /opt/ros/humble/setup.bash \
+#     && colcon build
 
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc \
     && echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc
