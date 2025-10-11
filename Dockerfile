@@ -18,14 +18,20 @@ RUN apt-get update \
 
 SHELL ["/bin/bash", "-c"]
 
-RUN mkdir -p ~/catkin_ws/src \
-    && cd ~/catkin_ws/src \
-    && git clone https://github.com/TixiaoShan/LIO-SAM.git \
-    && cd .. \
-    && source /opt/ros/kinetic/setup.bash \
-    && catkin_make
+ARG HOME_DIR=/root/catkin_ws
+ARG SRC_DIR=${HOME_DIR}/src/LIO-SAM
+
+WORKDIR ${SRC_DIR}
+ADD config ./config
+ADD include ./include
+ADD launch ./launch
+ADD msg ./msg
+ADD src ./src
+ADD srv ./srv
+ADD srv CMakeLists.txt package.xml ./
+WORKDIR ${HOME_DIR}
+RUN source /opt/ros/kinetic/setup.bash && catkin_make
 
 RUN echo "source /opt/ros/kinetic/setup.bash" >> /root/.bashrc \
     && echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 
-WORKDIR /root/catkin_ws
