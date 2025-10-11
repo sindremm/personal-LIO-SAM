@@ -16,8 +16,11 @@ RUN apt-get update \
     && apt install -y libgtsam-dev libgtsam-unstable-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Installing useful programs
+RUN apt-get update && apt install -y vim tmux wget
 SHELL ["/bin/bash", "-c"]
 
+# Adding workspace
 ARG HOME_DIR=/root/catkin_ws
 ARG SRC_DIR=${HOME_DIR}/src/LIO-SAM
 
@@ -28,9 +31,12 @@ ADD launch ./launch
 ADD msg ./msg
 ADD src ./src
 ADD srv ./srv
-ADD srv CMakeLists.txt package.xml ./
+ADD CMakeLists.txt package.xml ./
+
+# Building
 WORKDIR ${HOME_DIR}
 RUN source /opt/ros/kinetic/setup.bash && catkin_make
+ADD sim.sh .
 
 RUN echo "source /opt/ros/kinetic/setup.bash" >> /root/.bashrc \
     && echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
