@@ -21,11 +21,15 @@ RUN apt-get update \
     && apt install -y libgtsam-dev libgtsam-unstable-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Installing helpful programs
+RUN apt-get update && apt install -y vim tmux wget
+
 SHELL ["/bin/bash", "-c"]
 
 ARG HOME_DIR=/root/ros2_ws
 ARG SRC_DIR=${HOME_DIR}/src/LIO-SAM
 
+# Adding Workspace
 WORKDIR ${SRC_DIR}
 ADD config ./config
 ADD include ./include
@@ -33,17 +37,12 @@ ADD launch ./launch
 ADD msg ./msg
 ADD src ./src
 ADD srv ./srv
-ADD srv CMakeLists.txt package.xml ./
+ADD CMakeLists.txt package.xml sim.sh ./
+
+# Building
 WORKDIR ${HOME_DIR}
 RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
-# RUN mkdir -p ~/ros2_ws/src \
-#     && cd ~/ros2_ws/src \
-#     && git clone --branch ros2 https://github.com/sindremm/personal-LIO-SAM.git \
-#     && cd .. \
-#     && source /opt/ros/humble/setup.bash \
-#     && colcon build
+
 
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc \
     && echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc
-
-WORKDIR /root/ros2_ws
