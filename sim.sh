@@ -1,4 +1,5 @@
 #! /bin/bash
 
-ros2 launch lio_sam run.launch.py&
-ros2 bag play $1
+
+tmux new-window "ros2 bag play $1"
+ros2 launch lio_sam run.launch.py

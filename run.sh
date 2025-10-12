@@ -6,4 +6,4 @@ docker run --init -it \
   -v ./config:/root/ros2_ws/src/LIO-SAM/config \
   -e DISPLAY=$DISPLAY \
   lio-sam-ros2 \
-  bash
+  tmux
