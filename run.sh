@@ -6,4 +6,4 @@ docker run --init -it \
   -v ./config:/root/catkin_ws/src/LIO-SAM/config \
   -e DISPLAY=$DISPLAY \
   lio-sam-ros1 \
-  bash
+  tmux

@@ -1,4 +1,5 @@
 #! /bin/bash
 
-roslaunch lio_sam run.launch &
-rosbag play $1 -r 3
+
+tmux new-window "rosbag play $1"
+roslaunch lio_sam run.launch
